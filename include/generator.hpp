@@ -3,7 +3,7 @@
 class Labyrinth;
 
 struct Generator
-{ 
+{
   Generator(Labyrinth* owner);
   virtual ~Generator() = default;
   virtual void generate() = 0;
@@ -12,6 +12,18 @@ struct Generator
 
 struct BinaryTreeGenerator : public Generator
 {
-  BinaryTreeGenerator(Labyrinth* owner) : Generator(owner) {}
+  BinaryTreeGenerator(Labyrinth* owner)
+    : Generator(owner)
+  {
+  }
+  void generate() override;
+};
+
+struct SidewinderGenerator : public Generator
+{
+  SidewinderGenerator(Labyrinth* owner)
+    : Generator(owner)
+  {
+  }
   void generate() override;
 };

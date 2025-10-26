@@ -1,3 +1,6 @@
 .cache
 bin
 build
+update_tag.py
+tests
+.github

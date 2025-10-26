@@ -4,7 +4,8 @@
 int
 main()
 {
-  Labyrinth lab(10);
+  Labyrinth::init(5, 5);
+  Labyrinth& lab = Labyrinth::getInstance();
   lab.setGenerator(new BinaryTreeGenerator(&lab));
   lab.generateLabyrinth();
   lab.print();
