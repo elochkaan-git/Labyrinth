@@ -16,15 +16,15 @@ Labyrinth* Labyrinth::instance_ = nullptr;
  */
 Labyrinth::Labyrinth(size_t x, size_t y)
   : map_(y, std::vector<Cell>(x, {0, 0, 0, false, false}))
+  , reprOfmap_(y*2+1, std::vector<char>(x*2+1, '#'))
 {
   size_t i = 0;
   for(size_t y = 0; y < map_.size(); ++y)
     for(size_t x = 0; x < map_[0].size(); ++x) {
       map_[y][x].id = i;
-      map_[y][x].x = x;
-      map_[y][x].y = y;
       ++i;
     }
+  map_[0][0].isStart = true;
 }
 
 Labyrinth::~Labyrinth()
@@ -68,6 +68,18 @@ Labyrinth::getMap()
   return map_;
 }
 
+std::vector<std::vector<char>>&
+Labyrinth::getReprOfMap()
+{
+  return reprOfmap_;
+}
+
+bool
+Labyrinth::checkWinner()
+{
+  return player_->getPos() == end_;
+}
+
 /**
  * @brief Set generator of labyrinth
  * 
@@ -79,6 +91,18 @@ Labyrinth::setGenerator(Generator* generator)
   generator_ = generator;
 }
 
+void
+Labyrinth::setPlayer(Player* player)
+{
+  player_ = player;
+}
+
+void
+Labyrinth::setEnd(std::pair<size_t, size_t> end)
+{
+  end_ = end;
+}
+
 /**
  * @brief Generate labyrinth using generate method of generator
  * 
@@ -87,29 +111,45 @@ void
 Labyrinth::generateLabyrinth()
 {
   generator_->generate();
+  update();
 }
 
-void Labyrinth::print() {
+void
+Labyrinth::update()
+{
   size_t w = map_.size();
   size_t l = map_[0].size();
 
-  std::vector<std::vector<bool>> map(w*2+1, std::vector<bool>(l*2+1, false));
-
   for(size_t y=0; y<w; ++y) {
     for(size_t x=0; x<l; ++x) {
-      map[y*2+1][x*2+1] = true;
+      if(map_[y][x].isStart)
+        reprOfmap_[y*2+1][x*2+1] = 'X';
+      else if(map_[y][x].isEnd) {
+        reprOfmap_[y*2+1][x*2+1] = 'O';
+        setEnd({x*2+1, y*2+1});
+      }
+      else 
+        reprOfmap_[y*2+1][x*2+1] = ' ';
 
       if(map_[y][x].right)
-        map[y*2+1][x*2+2] = true;
+        reprOfmap_[y*2+1][x*2+2] = ' ';
 
       if(map_[y][x].bottom)
-        map[y*2+2][x*2+1] = true;
+        reprOfmap_[y*2+2][x*2+1] = ' ';
     }
   }
+}
 
-  for(size_t y=0; y<map.size(); ++y) {
-    for(size_t x=0; x<map[0].size(); ++x)
-      std::cout << (map[y][x] ? ' ' : '#');
+void
+Labyrinth::print()
+{
+  for(size_t y=0; y<reprOfmap_.size(); ++y) {
+    for(size_t x=0; x<reprOfmap_[0].size(); ++x) {
+      if(player_->getPos().first == x && player_->getPos().second == y)
+        std::cout << '@';
+      else
+        std::cout << reprOfmap_[y][x];
+    }
     std::cout << '\n';
   }
 }

@@ -1,15 +1,17 @@
 #pragma once
 #include "generator.hpp"
+#include "player.hpp"
 #include <cstddef>
+#include <utility>
 #include <vector>
 
 struct Cell
 {
   size_t id = 0;
-  size_t x = 0;
-  size_t y = 0;
   bool bottom = false;
   bool right = false;
+  bool isStart = false;
+  bool isEnd = false;
 };
 
 class Labyrinth
@@ -20,12 +22,20 @@ public:
   static Labyrinth& getInstance();
   static void init(size_t x, size_t y);
   std::vector<std::vector<Cell>>& getMap();
+  std::vector<std::vector<char>>& getReprOfMap();
+  bool checkWinner();
   void setGenerator(Generator* generator);
+  void setPlayer(Player* player);
   void generateLabyrinth();
+  void update();
   void print();
-
+  
 private:
+  void setEnd(std::pair<size_t, size_t> end);
   std::vector<std::vector<Cell>> map_;
+  std::vector<std::vector<char>> reprOfmap_;
   Generator* generator_ = nullptr;
+  Player* player_ = nullptr;
   static Labyrinth* instance_;
+  std::pair<size_t, size_t> end_;
 };

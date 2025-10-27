@@ -1,12 +1,12 @@
 #include "generator.hpp"
 #include "labyrinth.hpp"
-#include <algorithm>
 #include <bits/stdc++.h>
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
 #include <math.h>
+#include <random>
 #include <vector>
 
 Generator::Generator(Labyrinth* owner)
@@ -35,6 +35,7 @@ BinaryTreeGenerator::generate()
 
   for (size_t n = 0; n < length - 1; ++n)
     map[0][n].right = 1;
+  map[map.size()-1][0].isEnd = 1;
 }
 
 void
@@ -63,28 +64,7 @@ SidewinderGenerator::generate()
 
   for (size_t n = 0; n < length - 1; ++n)
     map[0][n].right = 1;
-}
-
-bool
-findNodeById(size_t targetId, std::vector<Cell>& cells)
-{
-  auto it = std::find_if(cells.begin(), cells.end(), [targetId](const Cell& c) {
-    return c.id == targetId;
-  });
-  if (it != cells.end())
-    return true;
-  return false;
-}
-
-Cell
-findNodeByXY(size_t x, size_t y, std::vector<Cell>& cells)
-{
-  auto it = std::find_if(cells.begin(), cells.end(), [x, y](const Cell& c) {
-    return c.x == x && c.y == y;
-  });
-  if (it != cells.end())
-    return *it;
-  return { 0, 0, 0, false, false };
+  map[map.size()-1][0].isEnd = 1;
 }
 
 void
@@ -151,6 +131,8 @@ WilsonGenerator::generate()
     }
     inMaze[path.back()] = true;
   }
+  
+  map[height_-1][width_-1].isEnd = 1;
 }
 
 size_t
