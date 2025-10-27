@@ -6,6 +6,8 @@
 struct Cell
 {
   size_t id = 0;
+  size_t x = 0;
+  size_t y = 0;
   bool bottom = false;
   bool right = false;
 };

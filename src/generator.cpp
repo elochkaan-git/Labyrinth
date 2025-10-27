@@ -1,11 +1,13 @@
 #include "generator.hpp"
 #include "labyrinth.hpp"
+#include <algorithm>
 #include <bits/stdc++.h>
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
 #include <math.h>
+#include <vector>
 
 Generator::Generator(Labyrinth* owner)
   : owner_(owner)
@@ -61,4 +63,120 @@ SidewinderGenerator::generate()
 
   for (size_t n = 0; n < length - 1; ++n)
     map[0][n].right = 1;
+}
+
+bool
+findNodeById(size_t targetId, std::vector<Cell>& cells)
+{
+  auto it = std::find_if(cells.begin(), cells.end(), [targetId](const Cell& c) {
+    return c.id == targetId;
+  });
+  if (it != cells.end())
+    return true;
+  return false;
+}
+
+Cell
+findNodeByXY(size_t x, size_t y, std::vector<Cell>& cells)
+{
+  auto it = std::find_if(cells.begin(), cells.end(), [x, y](const Cell& c) {
+    return c.x == x && c.y == y;
+  });
+  if (it != cells.end())
+    return *it;
+  return { 0, 0, 0, false, false };
+}
+
+void
+WilsonGenerator::generate()
+{
+  auto& map = owner_->getMap();
+  height_ = map.size();
+  width_ = map[0].size();
+
+  std::vector<bool> inMaze(width_ * height_, false);
+  std::uniform_int_distribution<size_t> dist(0, width_ * height_ - 1);
+
+  size_t startIdx = dist(rng_);
+  inMaze[startIdx] = true;
+
+  for (size_t idx = 0; idx < width_ * height_; ++idx) {
+    if (inMaze[idx])
+      continue;
+
+    std::vector<size_t> path;
+    std::vector<bool> inPath(width_ * height_, false);
+
+    size_t current = idx;
+    path.push_back(current);
+    inPath[current] = true;
+
+    while (!inMaze[current]) {
+      auto [x, y] = std::make_pair(current % width_, current / width_);
+      auto neighbors = getNeighbors(x, y);
+      std::uniform_int_distribution<size_t> ndist(0, neighbors.size() - 1);
+      auto [nx, ny] = neighbors[ndist(rng_)];
+
+      size_t next = getCellIndex(nx, ny);
+
+      if (inPath[next]) {
+        while (path.back() != next) {
+          inPath[path.back()] = false;
+          path.pop_back();
+        }
+      } else {
+        path.push_back(next);
+        inPath[next] = true;
+      }
+      current = next;
+    }
+
+    for (size_t i = 0; i < path.size() - 1; ++i) {
+      size_t curIdx = path[i];
+      size_t nextIdx = path[i + 1];
+
+      auto [cx, cy] = std::make_pair(curIdx % width_, curIdx / width_);
+      auto [nx, ny] = std::make_pair(nextIdx % width_, nextIdx / width_);
+
+      if (nx == cx + 1)
+        map[cy][cx].right = true;
+      else if (nx == cx - 1)
+        map[ny][nx].right = true;
+      else if (ny == cy + 1)
+        map[cy][cx].bottom = true;
+      else if (ny == cy - 1)
+        map[ny][nx].bottom = true;
+
+      inMaze[curIdx] = true;
+    }
+    inMaze[path.back()] = true;
+  }
+}
+
+size_t
+WilsonGenerator::getCellIndex(size_t x, size_t y) const
+{
+  return y * width_ + x;
+}
+
+void
+WilsonGenerator::indexToCell(size_t index, size_t& x, size_t& y) const
+{
+  x = index % width_;
+  y = index / width_;
+}
+
+std::vector<std::pair<size_t, size_t>>
+WilsonGenerator::getNeighbors(size_t x, size_t y) const
+{
+  std::vector<std::pair<size_t, size_t>> neighbors;
+  if (x > 0)
+    neighbors.emplace_back(x - 1, y); // left
+  if (x + 1 < width_)
+    neighbors.emplace_back(x + 1, y); // right
+  if (y > 0)
+    neighbors.emplace_back(x, y - 1); // up
+  if (y + 1 < height_)
+    neighbors.emplace_back(x, y + 1); // down
+  return neighbors;
 }

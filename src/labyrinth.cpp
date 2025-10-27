@@ -15,12 +15,14 @@ Labyrinth* Labyrinth::instance_ = nullptr;
  * @param y width
  */
 Labyrinth::Labyrinth(size_t x, size_t y)
-  : map_(y, std::vector<Cell>(x, {0, false, false}))
+  : map_(y, std::vector<Cell>(x, {0, 0, 0, false, false}))
 {
   size_t i = 0;
   for(size_t y = 0; y < map_.size(); ++y)
     for(size_t x = 0; x < map_[0].size(); ++x) {
       map_[y][x].id = i;
+      map_[y][x].x = x;
+      map_[y][x].y = y;
       ++i;
     }
 }
