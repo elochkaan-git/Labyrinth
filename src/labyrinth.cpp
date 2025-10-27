@@ -23,7 +23,6 @@ Labyrinth::Labyrinth(size_t x, size_t y)
       map_[y][x].id = i;
       ++i;
     }
-  return;
 }
 
 Labyrinth::~Labyrinth()
