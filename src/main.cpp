@@ -5,7 +5,7 @@
 int
 main()
 { 
-  Labyrinth::init(10, 10);
+  Labyrinth::init(30, 5);
   Labyrinth& lab = Labyrinth::getInstance();
   lab.setGenerator(new WilsonGenerator(&lab));
   lab.generateLabyrinth();

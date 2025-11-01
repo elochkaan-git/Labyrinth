@@ -68,12 +68,38 @@ Labyrinth::getMap()
   return map_;
 }
 
+/**
+ * @brief Return representation of map_ for labyrinth with thick
+ * walls. Exmaple:
+ * 
+ * |‾‾‾‾‾|
+ * | |‾‾ |
+ * |___|_|
+ *
+ * become
+ *
+ * #######
+ * #     #
+ * # ### #
+ * # #   #
+ * # # # #
+ * #   # #
+ * #######
+ * 
+ * @return std::vector<std::vector<char>>& representation of map_
+ */
 std::vector<std::vector<char>>&
 Labyrinth::getReprOfMap()
 {
   return reprOfmap_;
 }
 
+/**
+ * @brief 
+ * 
+ * @return true 
+ * @return false 
+ */
 bool
 Labyrinth::checkWinner()
 {

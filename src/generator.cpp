@@ -1,6 +1,5 @@
 #include "generator.hpp"
 #include "labyrinth.hpp"
-#include <bits/stdc++.h>
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
