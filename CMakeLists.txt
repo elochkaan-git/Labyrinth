@@ -5,13 +5,21 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-# include(FetchContent)
+include(FetchContent)
 # FetchContent_Declare(
 #   googletest
 #   URL https://github.com/google/googletest/releases/download/v1.17.0/googletest-1.17.0.tar.gz
 #   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 # )
 # FetchContent_MakeAvailable(googletest)
+
+FetchContent_Declare(SFML
+  GIT_REPOSITORY https://github.com/SFML/SFML.git
+  GIT_TAG 3.0.x
+  GIT_SHALLOW ON
+  EXCLUDE_FROM_ALL
+  SYSTEM)
+FetchContent_MakeAvailable(SFML)
 
 include_directories(include)
 file(GLOB SOURCES "src/*.cpp")
@@ -22,6 +30,7 @@ add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 # set_target_properties(testing PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics)
 # target_link_libraries(testing GTest::gtest_main)
 
 # execute_process(
@@ -74,4 +83,4 @@ endif()
 # enable_testing()
 # include(GoogleTest)
 # include(CPack)
-# gtest_discover_tests(testing)
+# gtest_discover_tests(testing)cmake_minimum_required(VERSION 3.28)
