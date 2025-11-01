@@ -30,7 +30,7 @@ add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 # set_target_properties(testing PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests)
-target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
 # target_link_libraries(testing GTest::gtest_main)
 
 # execute_process(
