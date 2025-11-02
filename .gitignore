@@ -4,3 +4,4 @@ build
 update_tag.py
 tests
 .github
+.vscode
