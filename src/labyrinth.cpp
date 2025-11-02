@@ -117,12 +117,22 @@ Labyrinth::setGenerator(Generator* generator)
   generator_ = generator;
 }
 
+/**
+ * @brief Add player instance to labyrinth
+ * 
+ * @param player pointer to player instance
+ */
 void
 Labyrinth::setPlayer(Player* player)
 {
   player_ = player;
 }
 
+/**
+ * @brief Set end of labyrinth
+ * 
+ * @param end coordinates of end
+ */
 void
 Labyrinth::setEnd(std::pair<size_t, size_t> end)
 {
@@ -140,6 +150,10 @@ Labyrinth::generateLabyrinth()
   update();
 }
 
+/**
+ * @brief Make labyrinth with thick walls from map_ 
+ * 
+ */
 void
 Labyrinth::update()
 {
@@ -166,6 +180,10 @@ Labyrinth::update()
   }
 }
 
+/**
+ * @brief Print representation of map_
+ * 
+ */
 void
 Labyrinth::print()
 {

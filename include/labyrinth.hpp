@@ -27,10 +27,10 @@ public:
   void setGenerator(Generator* generator);
   void setPlayer(Player* player);
   void generateLabyrinth();
-  void update();
   void print();
   
 private:
+  void update();
   void setEnd(std::pair<size_t, size_t> end);
   std::vector<std::vector<Cell>> map_;
   std::vector<std::vector<char>> reprOfmap_;
