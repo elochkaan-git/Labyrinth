@@ -44,8 +44,10 @@ main()
   
   while (window.isOpen())
   {
-    if(lab.checkWinner())
+    if(lab.checkWinner()){
+      std::cout << "You win!\n";
       window.close();
+    }
     auto [x, y] = p->getPos();
     // check all the window's events that were triggered since the last iteration of the loop
     while (const std::optional event = window.pollEvent())
@@ -85,6 +87,6 @@ main()
     // end the current frame
     window.display();
   }
-  std::cout << "You win!\n";
+  
   return 0;
 }
