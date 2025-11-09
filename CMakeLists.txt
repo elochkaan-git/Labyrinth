@@ -1,9 +1,13 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.31)
 
 project(labyrinth)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+# Set properties that will be used while building TGUI
+set(BUILD_SHARED_LIBS OFF)      # Determines whether TGUI build a static or dynamic/shared library
+set(TGUI_BACKEND SFML_GRAPHICS)  # Sets which backend TGUI will use
+
 
 include(FetchContent)
 # FetchContent_Declare(
@@ -13,6 +17,7 @@ include(FetchContent)
 # )
 # FetchContent_MakeAvailable(googletest)
 
+
 FetchContent_Declare(SFML
   GIT_REPOSITORY https://github.com/SFML/SFML.git
   GIT_TAG 3.0.x
@@ -20,6 +25,14 @@ FetchContent_Declare(SFML
   EXCLUDE_FROM_ALL
   SYSTEM)
 FetchContent_MakeAvailable(SFML)
+
+
+FetchContent_Declare(
+  TGUI
+  GIT_REPOSITORY https://github.com/texus/TGUI
+  GIT_TAG v1.10.0   # Change this to wanted version
+)
+FetchContent_MakeAvailable(TGUI)
 
 include_directories(include)
 file(GLOB SOURCES "src/*.cpp")
@@ -30,7 +43,7 @@ add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 # set_target_properties(testing PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests)
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics TGUI::TGUI)
 # target_link_libraries(testing GTest::gtest_main)
 
 # execute_process(
