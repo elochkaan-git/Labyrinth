@@ -1,0 +1,57 @@
+name: 'Labyrinth'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    permissions: write-all
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Installing dependencies (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: 
+          sudo apt-get update -y;
+          sudo apt-get install -y libxrandr-dev libxcursor-dev libxi-dev libudev-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype6-dev
+
+      - name: Installing dependencies (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          .\vcpkg\bootstrap-vcpkg.bat
+          .\vcpkg\vcpkg install sfml --triplet x64-windows
+
+      - name: Configure Cmake (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: cmake -B build -S . -G "Unix Makefiles"
+
+      - name: Configure Cmake (Windows)
+        if: matrix.os == 'windows-latest'
+        run: cmake -B build -S . -G "Visual Studio 17 2022" -A x64
+
+      - name: Build project
+        run: cmake --build build --config Release
+
+      - name: Build package
+        if: matrix.os == 'windows-latest'
+        run: cmake --build build --target package --config Release
+          
+      - name: Upload Release Asset
+        if: matrix.os == 'windows-latest'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: gh release upload "${TAG}" bin/labyrinth.zip;
+          
