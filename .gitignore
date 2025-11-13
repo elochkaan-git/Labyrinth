@@ -1,6 +1,5 @@
 .cache
 bin
 build
-update_tag.py
 tests
 .vscode
