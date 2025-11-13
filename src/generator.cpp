@@ -1,5 +1,6 @@
 #include "generator.hpp"
 #include "labyrinth.hpp"
+#include "spdlog/spdlog.h"
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
@@ -9,8 +10,13 @@
 #include <vector>
 
 Generator::Generator(Labyrinth* owner)
-  : owner_(owner)
 {
+  if(owner)
+    owner_ = owner;
+  else {
+    spdlog::critical("'owner' must be not nullptr! Shutdown program");
+    throw std::runtime_error("'owner' is nullptr");
+  }
 }
 
 void

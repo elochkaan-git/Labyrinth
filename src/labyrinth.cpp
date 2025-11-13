@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <spdlog/spdlog.h>
 
 Labyrinth* Labyrinth::instance_ = nullptr;
 
@@ -13,7 +14,7 @@ Labyrinth* Labyrinth::instance_ = nullptr;
  * @param x length
  * @param y width
  */
-Labyrinth::Labyrinth(size_t x, size_t y)
+Labyrinth::Labyrinth(unsigned int x, unsigned int y)
   : map_(y, std::vector<Cell>(x, { 0, 0, 0, false, false }))
   , reprOfmap_(y * 2 + 1, std::vector<char>(x * 2 + 1, '#'))
 {
@@ -39,8 +40,10 @@ Labyrinth::~Labyrinth()
 Labyrinth&
 Labyrinth::getInstance()
 {
-  if (!instance_)
+  if (!instance_) {
+    spdlog::critical("Labyrinth not initialized! Shutdown program");
     throw std::runtime_error("Singleton not initialized!");
+  }
   return *instance_;
 }
 
@@ -51,9 +54,10 @@ Labyrinth::getInstance()
  * @param y width
  */
 void
-Labyrinth::init(size_t x, size_t y)
+Labyrinth::init(unsigned int x, unsigned int y)
 {
   instance_ = new Labyrinth(x, y);
+  spdlog::info("Initializing maze with sizes ({}, {})", x, y);
 }
 
 /**
@@ -102,7 +106,12 @@ Labyrinth::getReprOfMap()
 bool
 Labyrinth::checkWinner()
 {
-  return player_->getPos() == end_;
+  if(player_)
+    return player_->getPos() == end_;
+  else {
+    spdlog::critical("Player instance not set! Shutdown program");
+    throw std::runtime_error("Player not set");
+  }
 }
 
 /**
@@ -145,8 +154,19 @@ Labyrinth::setEnd(sf::Vector2u end)
 void
 Labyrinth::generateLabyrinth()
 {
-  generator_->generate();
-  update();
+  try {
+    if(generator_) {
+      generator_->generate();
+      update();
+    } else {
+      spdlog::error("Generator not provided! Using BinaryTreeGenerator instead");
+      throw std::runtime_error("Generator not set");
+    }
+  } catch (const std::runtime_error& e) {
+    setGenerator(new BinaryTreeGenerator(instance_));
+    generator_->generate();
+    update();
+  }
 }
 
 /**

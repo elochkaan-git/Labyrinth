@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "labyrinth.hpp"
+#include "spdlog/spdlog.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 
@@ -16,13 +17,22 @@ Player::Player(Labyrinth* owner, float radius)
 Player*
 Player::getInstance()
 {
+  if (!instance_) {
+    spdlog::critical("Player not initialized! Shutdown program");
+    throw std::runtime_error("Singleton not initialized!");
+  }
   return instance_;
 }
 
 void
 Player::init(Labyrinth* owner, float radius)
 {
-  instance_ = new Player(owner, radius);
+  if(owner)
+    instance_ = new Player(owner, radius);
+  else {
+    spdlog::critical("'owner' must be not nullptr! Shutdown program");
+    throw std::runtime_error("'owner' is nullptr");
+  }
 }
 
 void
@@ -40,6 +50,7 @@ Player::move(char direction)
     pos.y--;
 
   if (map[pos.y][pos.x] != '#') {
+    spdlog::info("Moving player to ({}, {})", pos.x, pos.y);
     pos_ = pos;
     shape_.setPosition(
       { shape_.getRadius() / 0.49f * pos.x, shape_.getRadius() / 0.49f * pos.y });

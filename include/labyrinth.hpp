@@ -17,10 +17,10 @@ struct Cell
 class Labyrinth
 {
 public:
-  Labyrinth(size_t x, size_t y);
+  Labyrinth(unsigned int x, unsigned int y);
   ~Labyrinth();
   static Labyrinth& getInstance();
-  static void init(size_t x, size_t y);
+  static void init(unsigned int x, unsigned int y);
   std::vector<std::vector<Cell>>& getMap();
   std::vector<std::vector<char>>& getReprOfMap();
   bool checkWinner();

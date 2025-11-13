@@ -1,6 +1,8 @@
 #include "generator.hpp"
 #include "labyrinth.hpp"
 #include "player.hpp"
+#include "spdlog/common.h"
+#include "spdlog/spdlog.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
@@ -8,8 +10,10 @@
 int
 main()
 {
+  spdlog::set_level(spdlog::level::debug);
+  spdlog::set_pattern("[%H:%M:%S] [%n] [%^---%L---%$] [thread %t] %v");
   // making grid with const size, where cell_size means size of square in pixels
-  const int length_field = 30, width_field = 10, cell_size = 25;
+  const int length_field = 10, width_field = 10, cell_size = 25;
   Labyrinth::init(length_field, width_field);
   Labyrinth& lab = Labyrinth::getInstance();
   lab.setGenerator(new WilsonGenerator(&lab));
