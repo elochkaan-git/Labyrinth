@@ -51,6 +51,7 @@ else ()
 endif()
 
 if(MSVC)
+  install(TARGETS ${PROJECT_NAME} DESTINATION bin)
   execute_process(
     COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/update_tag.py
     RESULT_VARIABLE exit_code
