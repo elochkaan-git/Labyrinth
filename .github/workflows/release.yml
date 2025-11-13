@@ -53,5 +53,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
-        run: gh release upload "${TAG}" bin/labyrinth.zip;
-          
+        run: |
+          TAG=$(git describe --abbrev=0 --tags)
+          gh release create "${TAG}" bin/labyrinth.zip
