@@ -34,7 +34,7 @@ BinaryTreeGenerator::generate()
 
   for (size_t n = 0; n < length - 1; ++n)
     map[0][n].right = 1;
-  map[map.size()-1][0].isEnd = 1;
+  map[map.size() - 1][0].isEnd = 1;
 }
 
 void
@@ -63,7 +63,7 @@ SidewinderGenerator::generate()
 
   for (size_t n = 0; n < length - 1; ++n)
     map[0][n].right = 1;
-  map[map.size()-1][0].isEnd = 1;
+  map[map.size() - 1][0].isEnd = 1;
 }
 
 void
@@ -130,8 +130,8 @@ WilsonGenerator::generate()
     }
     inMaze[path.back()] = true;
   }
-  
-  map[height_-1][width_-1].isEnd = 1;
+
+  map[height_ - 1][width_ - 1].isEnd = 1;
 }
 
 size_t

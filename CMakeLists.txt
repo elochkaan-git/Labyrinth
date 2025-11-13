@@ -17,7 +17,6 @@ include(FetchContent)
 # )
 # FetchContent_MakeAvailable(googletest)
 
-
 FetchContent_Declare(SFML
   GIT_REPOSITORY https://github.com/SFML/SFML.git
   GIT_TAG 3.0.x
@@ -26,6 +25,12 @@ FetchContent_Declare(SFML
   SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
+FetchContent_Declare(
+  spdlog
+  GIT_REPOSITORY https://github.com/gabime/spdlog.git
+  GIT_TAG v1.x
+)
+FetchContent_MakeAvailable(spdlog)
 
 FetchContent_Declare(
   TGUI
@@ -43,7 +48,7 @@ add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 # set_target_properties(testing PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests)
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics TGUI::TGUI)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics TGUI::TGUI spdlog::spdlog)
 # target_link_libraries(testing GTest::gtest_main)
 
 # execute_process(
