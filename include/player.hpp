@@ -4,6 +4,8 @@
 
 class Labyrinth;
 
+enum Direction { Right, Left, Up, Down };
+
 class Player
 {
 public:

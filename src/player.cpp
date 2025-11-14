@@ -6,6 +6,12 @@
 
 Player* Player::instance_ = nullptr;
 
+/**
+ * @brief Construct a new Player:: Player object
+ * 
+ * @param owner instance of Labyrinth
+ * @param radius radius of player circle
+ */
 Player::Player(Labyrinth* owner, float radius)
   : shape_(radius)
 {
@@ -14,6 +20,11 @@ Player::Player(Labyrinth* owner, float radius)
     { radius / 0.49f * getPos().x, radius / 0.49f * getPos().y });
 }
 
+/**
+ * @brief Return instance of player
+ * 
+ * @return Player* instance
+ */
 Player*
 Player::getInstance()
 {
@@ -24,6 +35,12 @@ Player::getInstance()
   return instance_;
 }
 
+/**
+ * @brief Construct new singletone instance
+ * 
+ * @param owner instance of Labyrinth
+ * @param radius radius of player circle
+ */
 void
 Player::init(Labyrinth* owner, float radius)
 {
@@ -35,25 +52,34 @@ Player::init(Labyrinth* owner, float radius)
   }
 }
 
+/**
+ * @brief Change player and circle positions
+ * 
+ * @param direction 
+ */
 void
 Player::move(char direction)
-{
-  auto& map = owner_->getReprOfMap();
-  sf::Vector2u pos = getPos();
-  if (direction == 'r')
-    pos.x++;
-  if (direction == 'l')
-    pos.x--;
-  if (direction == 'd')
-    pos.y++;
-  if (direction == 'u')
-    pos.y--;
+{ 
+  if(0 <= direction && direction <= 3) {
+    auto& map = owner_->getReprOfMap();
+    sf::Vector2u pos = getPos();
+    if (direction == Direction::Right)
+      pos.x++;
+    if (direction == Direction::Left)
+      pos.x--;
+    if (direction == Direction::Down)
+      pos.y++;
+    if (direction == Direction::Up)
+      pos.y--;
 
-  if (map[pos.y][pos.x] != '#') {
-    spdlog::info("Moving player to ({}, {})", pos.x, pos.y);
-    pos_ = pos;
-    shape_.setPosition(
-      { shape_.getRadius() / 0.49f * pos.x, shape_.getRadius() / 0.49f * pos.y });
+    if (map[pos.y][pos.x] != '#') {
+      spdlog::info("Moving player to ({}, {})", pos.x, pos.y);
+      pos_ = pos;
+      shape_.setPosition(
+        { shape_.getRadius() / 0.49f * pos.x, shape_.getRadius() / 0.49f * pos.y });
+    }
+  } else {
+    spdlog::warn("Wrong direction! Must be between 0 and 4 inclusive, got {} instead", (int)direction);
   }
 }
 

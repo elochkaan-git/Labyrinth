@@ -10,8 +10,10 @@
 int
 main()
 {
+  // Setup logger
   spdlog::set_level(spdlog::level::debug);
   spdlog::set_pattern("[%H:%M:%S] [%n] [%^---%L---%$] [thread %t] %v");
+
   // making grid with const size, where cell_size means size of square in pixels
   const int length_field = 10, width_field = 10, cell_size = 25;
   Labyrinth::init(length_field, width_field);
@@ -29,7 +31,6 @@ main()
     sf::Style::Close);
 
   // creating map
-
   std::vector<std::vector<sf::RectangleShape>> cells(map_represent.size());
 
   for (size_t y = 0; y < rep_width; ++y) {
@@ -64,13 +65,13 @@ main()
         window.close();
       else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
         if (keyPressed->scancode == sf::Keyboard::Scancode::W)
-          p->move('u');
+          p->move(Direction::Up);
         if (keyPressed->scancode == sf::Keyboard::Scancode::A)
-          p->move('l');
+          p->move(Direction::Left);
         if (keyPressed->scancode == sf::Keyboard::Scancode::S)
-          p->move('d');
+          p->move(Direction::Down);
         if (keyPressed->scancode == sf::Keyboard::Scancode::D)
-          p->move('r');
+          p->move(Direction::Right);
       }
     }
     // clear the window with black color
