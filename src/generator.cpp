@@ -9,6 +9,11 @@
 #include <random>
 #include <vector>
 
+/**
+ * @brief Construct a new Generator:: Generator object
+ * 
+ * @param owner instance of Labyrinth
+ */
 Generator::Generator(Labyrinth* owner)
 {
   if(owner)
@@ -19,6 +24,10 @@ Generator::Generator(Labyrinth* owner)
   }
 }
 
+/**
+ * @brief Fill map of owner using Binary Tree algorythm
+ * 
+ */
 void
 BinaryTreeGenerator::generate()
 {
@@ -43,6 +52,10 @@ BinaryTreeGenerator::generate()
   map[map.size() - 1][0].isEnd = 1;
 }
 
+/**
+ * @brief Fill map of owner using Sidewinder algorythm
+ * 
+ */
 void
 SidewinderGenerator::generate()
 {
@@ -72,6 +85,10 @@ SidewinderGenerator::generate()
   map[map.size() - 1][0].isEnd = 1;
 }
 
+/**
+ * @brief Fill map of owner Wilson algorythm
+ * 
+ */
 void
 WilsonGenerator::generate()
 {
@@ -140,12 +157,26 @@ WilsonGenerator::generate()
   map[height_ - 1][width_ - 1].isEnd = 1;
 }
 
+/**
+ * @brief Auxiliary method for Wilson algorythm
+ * 
+ * @param x x coordinate of cell
+ * @param y y coordinate of cell
+ * @return size_t cell index
+ */
 size_t
 WilsonGenerator::getCellIndex(size_t x, size_t y) const
 {
   return y * width_ + x;
 }
 
+/**
+ * @brief Auxiliary method for Wilson algorytm
+ * 
+ * @param index index of cell
+ * @param x x coordinate of cell
+ * @param y y coordinate of cell
+ */
 void
 WilsonGenerator::indexToCell(size_t index, size_t& x, size_t& y) const
 {
@@ -153,6 +184,13 @@ WilsonGenerator::indexToCell(size_t index, size_t& x, size_t& y) const
   y = index / width_;
 }
 
+/**
+ * @brief Auxiliary method for Wilson algorytm
+ * 
+ * @param x x coordinate of cell
+ * @param y y coordinate of cell
+ * @return std::vector<std::pair<size_t, size_t>> neighbours of cell
+ */
 std::vector<std::pair<size_t, size_t>>
 WilsonGenerator::getNeighbors(size_t x, size_t y) const
 {
