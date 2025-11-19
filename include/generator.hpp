@@ -39,7 +39,7 @@ struct WilsonGenerator : public Generator
   void generate() override;
 
 private:
-  std::mt19937 rng_{std::random_device{}()};
+  std::mt19937 rng_{ std::random_device{}() };
   size_t width_;
   size_t height_;
 

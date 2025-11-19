@@ -11,12 +11,12 @@
 
 /**
  * @brief Construct a new Generator:: Generator object
- * 
+ *
  * @param owner instance of Labyrinth
  */
 Generator::Generator(Labyrinth* owner)
 {
-  if(owner)
+  if (owner)
     owner_ = owner;
   else {
     spdlog::critical("'owner' must be not nullptr! Shutdown program");
@@ -26,7 +26,7 @@ Generator::Generator(Labyrinth* owner)
 
 /**
  * @brief Fill map of owner using Binary Tree algorythm
- * 
+ *
  */
 void
 BinaryTreeGenerator::generate()
@@ -54,7 +54,7 @@ BinaryTreeGenerator::generate()
 
 /**
  * @brief Fill map of owner using Sidewinder algorythm
- * 
+ *
  */
 void
 SidewinderGenerator::generate()
@@ -87,7 +87,7 @@ SidewinderGenerator::generate()
 
 /**
  * @brief Fill map of owner Wilson algorythm
- * 
+ *
  */
 void
 WilsonGenerator::generate()
@@ -159,7 +159,7 @@ WilsonGenerator::generate()
 
 /**
  * @brief Auxiliary method for Wilson algorythm
- * 
+ *
  * @param x x coordinate of cell
  * @param y y coordinate of cell
  * @return size_t cell index
@@ -172,7 +172,7 @@ WilsonGenerator::getCellIndex(size_t x, size_t y) const
 
 /**
  * @brief Auxiliary method for Wilson algorytm
- * 
+ *
  * @param index index of cell
  * @param x x coordinate of cell
  * @param y y coordinate of cell
@@ -186,7 +186,7 @@ WilsonGenerator::indexToCell(size_t index, size_t& x, size_t& y) const
 
 /**
  * @brief Auxiliary method for Wilson algorytm
- * 
+ *
  * @param x x coordinate of cell
  * @param y y coordinate of cell
  * @return std::vector<std::pair<size_t, size_t>> neighbours of cell

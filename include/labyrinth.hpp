@@ -28,7 +28,7 @@ public:
   void setPlayer(Player* player);
   void generateLabyrinth();
   void print();
-  
+
 private:
   void update();
   void setEnd(sf::Vector2u end);

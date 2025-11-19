@@ -2,9 +2,9 @@
 #include "generator.hpp"
 #include <cstddef>
 #include <iostream>
+#include <spdlog/spdlog.h>
 #include <stdexcept>
 #include <vector>
-#include <spdlog/spdlog.h>
 
 Labyrinth* Labyrinth::instance_ = nullptr;
 
@@ -106,7 +106,7 @@ Labyrinth::getReprOfMap()
 bool
 Labyrinth::checkWinner()
 {
-  if(player_)
+  if (player_)
     return player_->getPos() == end_;
   else {
     spdlog::critical("Player instance not set! Shutdown program");
@@ -155,11 +155,12 @@ void
 Labyrinth::generateLabyrinth()
 {
   try {
-    if(generator_) {
+    if (generator_) {
       generator_->generate();
       update();
     } else {
-      spdlog::error("Generator not provided! Using BinaryTreeGenerator instead");
+      spdlog::error(
+        "Generator not provided! Using BinaryTreeGenerator instead");
       throw std::runtime_error("Generator not set");
     }
   } catch (const std::runtime_error& e) {

@@ -4,7 +4,13 @@
 
 class Labyrinth;
 
-enum Direction { Right, Left, Up, Down };
+enum Direction
+{
+  Right,
+  Left,
+  Up,
+  Down
+};
 
 class Player
 {
@@ -13,12 +19,12 @@ public:
   ~Player() = default;
   static Player* getInstance();
   static void init(Labyrinth* owner, float radius);
-  const sf::CircleShape& getShape() const; 
+  const sf::CircleShape& getShape() const;
   sf::Vector2u getPos() const;
   void move(char direction);
 
 private:
-  sf::Vector2u pos_ = {1, 1};
+  sf::Vector2u pos_ = { 1, 1 };
   static Player* instance_;
   Labyrinth* owner_;
   sf::CircleShape shape_;
