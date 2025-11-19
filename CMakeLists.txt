@@ -4,10 +4,6 @@ project(labyrinth)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-# Set properties that will be used while building TGUI
-set(BUILD_SHARED_LIBS OFF)      # Determines whether TGUI build a static or dynamic/shared library
-set(TGUI_BACKEND SFML_GRAPHICS)  # Sets which backend TGUI will use
-
 
 include(FetchContent)
 FetchContent_Declare(SFML
@@ -25,20 +21,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
-FetchContent_Declare(
-  TGUI
-  GIT_REPOSITORY https://github.com/texus/TGUI
-  GIT_TAG v1.10.0   # Change this to wanted version
-)
-FetchContent_MakeAvailable(TGUI)
-
 include_directories(include)
 file(GLOB SOURCES "src/*.cpp")
 
 add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 
+find_package(Boost REQUIRED COMPONENTS program_options filesystem)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics TGUI::TGUI spdlog::spdlog)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics spdlog::spdlog)
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::program_options Boost::filesystem)
 
 if (MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE
