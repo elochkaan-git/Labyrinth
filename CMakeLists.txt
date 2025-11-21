@@ -41,8 +41,44 @@ else ()
   )
 endif()
 
+if (WIN32)
+    message(STATUS "Configuring DLL copy step...")
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            $<TARGET_FILE_DIR:sfml-graphics>
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    )
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${Boost_PROGRAM_OPTIONS_LIBRARY}
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+    )
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${Boost_FILESYSTEM_LIBRARY}
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+    )
+endif()
+
 if(MSVC)
   install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+
+
+  install(FILES
+      $<TARGET_FILE:sfml-graphics>
+      $<TARGET_FILE:sfml-window>
+      $<TARGET_FILE:sfml-system>
+      $<TARGET_FILE:sfml-audio>
+      $<TARGET_FILE:sfml-network>
+      DESTINATION .
+  )
+  install(FILES
+      ${Boost_PROGRAM_OPTIONS_LIBRARY}
+      ${Boost_FILESYSTEM_LIBRARY}
+      DESTINATION .
+  )
+  
   execute_process(
     COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/update_tag.py
     RESULT_VARIABLE exit_code
