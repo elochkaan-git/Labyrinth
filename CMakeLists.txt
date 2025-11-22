@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 message(STATUS "Searching libraries")
-find_package(SFML 3 COMPONENTS graphics window system)
-find_package(spdlog)
+find_package(SFML COMPONENTS Network Graphics Window Audio System CONFIG)
+find_package(spdlog CONFIG)
 find_package(Boost CONFIG COMPONENTS program_options)
 include(FetchContent)
 
