@@ -45,7 +45,8 @@ file(GLOB SOURCES "src/*.cpp")
 
 add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics spdlog::spdlog)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System)
+target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::program_options)
 
 if (MSVC)
@@ -59,6 +60,12 @@ else ()
 endif()
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(FILES $<TARGET_FILE:Boost::program_options> DESTINATION bin)
+install(FILES $<TARGET_FILE:SFML::Graphics> DESTINATION bin)
+install(FILES $<TARGET_FILE:SFML::Window> DESTINATION bin)
+install(FILES $<TARGET_FILE:SFML::System> DESTINATION bin)
+install(FILES $<TARGET_FILE:spdlog::spdlog> DESTINATION bin)
+
 execute_process(
   COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/update_tag.py
   RESULT_VARIABLE exit_code
