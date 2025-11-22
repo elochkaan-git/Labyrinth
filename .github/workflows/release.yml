@@ -48,7 +48,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ext: ${{
-            matrix.os == 'ubuntu-latest' && '.tar.gz' ||
+            matrix.os == 'ubuntu-latest' && '.deb' ||
             matrix.os == 'windows-latest' && '.zip'}}
         shell: bash
         run: |
