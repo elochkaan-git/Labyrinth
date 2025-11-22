@@ -60,11 +60,9 @@ else ()
 endif()
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-install(FILES $<TARGET_FILE:Boost::program_options> DESTINATION bin)
-install(FILES $<TARGET_FILE:SFML::Graphics> DESTINATION bin)
-install(FILES $<TARGET_FILE:SFML::Window> DESTINATION bin)
-install(FILES $<TARGET_FILE:SFML::System> DESTINATION bin)
-install(FILES $<TARGET_FILE:spdlog::spdlog> DESTINATION bin)
+install(FILES $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
+    DESTINATION bin
+)
 
 execute_process(
   COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/update_tag.py
