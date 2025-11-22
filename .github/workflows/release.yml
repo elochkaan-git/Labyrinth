@@ -31,7 +31,7 @@ jobs:
         run: |
           git clone https://github.com/microsoft/vcpkg.git
           .\vcpkg\bootstrap-vcpkg.bat
-          .\vcpkg\vcpkg install sfml spdlog boost-program-options boost-filesystem --triplet x64-windows
+          .\vcpkg\vcpkg install --triplet x64-windows sfml spdlog boost-program-options boost-filesystem
 
       - name: Configure Cmake (Linux)
         if: matrix.os == 'ubuntu-latest'
