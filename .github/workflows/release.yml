@@ -41,18 +41,19 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: cmake -B build -S . -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE="vcpkg/scripts/buildsystems/vcpkg.cmake"
 
-      - name: Build project
-        run: cmake --build build --config Release
-
-      - name: Build package
-        if: matrix.os == 'windows-latest'
+      - name: Build project and package
         run: cmake --build build --target package --config Release
           
       - name: Upload Release Asset
-        if: matrix.os == 'windows-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ext: ${{
+            matrix.os == 'ubuntu-latest' && '.tar.gz' ||
+            matrix.os == 'windows-latest' && '.zip'}}
         shell: bash
         run: |
           TAG=$(git describe --abbrev=0 --tags)
-          gh release create "${TAG}" bin/labyrinth.zip
+          if gh release view "${TAG}" > /dev/null 2>&1; 
+          then gh release upload "${TAG}" bin/labyrinth${ext};
+          else gh release create "${TAG}" bin/labyrinth${ext};
+          fi
